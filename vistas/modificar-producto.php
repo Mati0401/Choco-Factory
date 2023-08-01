@@ -26,53 +26,55 @@
                     </tr>
 
                     <?php
-                    $sql="SELECT * FROM producto";
-                    $result=mysqli_query($conexion,$sql);
-
-                    while($mostrar=mysqli_fetch_array($result)){
-                    ?>
                     
-                    <tr>
-                        <th><?php echo $mostrar['id'] ?></th>
-                        <th><?php echo $mostrar['nombre'] ?></th>
-                        <th><?php echo $mostrar['descripcion'] ?></th>
-                        <th><?php echo $mostrar['precio_unitario'] ?></th>
-                        <th><?php echo $mostrar['stock'] ?></th>
-                    </tr>
+                    include '../php/conexion.php';
+                    include '../php/mostrarDatos.php';
 
-                    <?php
+                    while($mostrar=mysqli_fetch_array($datos)){
+                    
+                        echo "<tr>";
+                        echo "<td>".$mostrar['id']."</td>";
+                        echo "<td>".$mostrar['nombre']."</td>";
+                        echo "<td>".$mostrar['descripcion']."</td>";
+                        echo "<td>".$mostrar['precio_unitario']."</td>";
+                        echo "<td>".$mostrar['stock']."</td>";
+                        echo "<td style='width:24%'>
+                        <a class='BotonesTeam3' href=\"../php/modificar.php?id=$mostrar[id]\" onClick=\"return confirm('¿Estás seguro de modificar el producto $mostrar[nombre]?')\">&#9997;</a>
+                        </td>"; 
+
                     }
+
                     ?>
 
                 </table>
 
             </div>
             <div class="col-sm-6 columna-derecha">
-                <form>
+                <form action="../php/modificar.php" method="post">
     
                     <div class="form-group">
                         <label for="nombre">Nombre:</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        <input type="text" class="form-control" id="nombre" name="nombre" readonly value="<?php echo $nombre; ?>" required>
                     </div>
             
                     <div class="form-group">
                         <label for="descripcion">Descripción:</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" required></textarea>
+                        <textarea class="form-control" id="descripcion" name="descripcion" readonly value="<?php echo $descripcion; ?>" required></textarea>
                     </div>
             
                     <div class="form-group">
                         <label for="precio_unitario">Precio Unitario:</label>
-                        <input type="number" class="form-control" id="precio_unitario" name="precio_unitario" step="0.01" required>
+                        <input type="number" class="form-control" id="precio_unitario" name="precio_unitario" step="0.01" readonly value="<?php echo $precio_unitario; ?>" required>
                     </div>
             
                     <div class="form-group">
                         <label for="stock">Stock:</label>
-                        <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+                        <input type="number" class="form-control" id="stock" name="stock" min="0" readonly value="<?php echo $stock; ?>" required>
                     </div>
     
-                    <div class="ubicacion-btn">
-                        <button type="submit" class="btn btn-primary mt-3 boton">Modificar</button>
-                    </div>
+                    <div class="form-group ubicacion-btn p-3">
+                    <button type="submit" class="btn btn-primary boton" name="guardar-producto">Modificar</button>
+                </div>
                   
                 </form>
             </div>

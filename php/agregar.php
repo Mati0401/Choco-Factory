@@ -16,7 +16,7 @@
         echo "No se guardo el producto!";
     } 
     else {
-        header("Location: index.html");
+        header("Location: ../index.html");
     }
 
 ?>

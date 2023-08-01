@@ -4,6 +4,13 @@
 
     $id = $_GET['id'];
 
-    mysqli_query($conexion, "DELETE FROM producto WHERE id='$id'");
+    $rta = mysqli_query($conexion, "DELETE FROM producto WHERE id='$id'");
+
+    if(!$rta){
+        echo "No se elimino el producto!";
+    } 
+    else {
+        header("Location: ../vistas/eliminar-producto.php");
+    }
 
 ?>

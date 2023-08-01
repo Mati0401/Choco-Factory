@@ -27,14 +27,11 @@
                     </tr>
 
                     <?php
-                    // Conectar a la base de datos
-                    $conexion = mysqli_connect('localhost','root','','chocofactorybd')
-                    or die(mysqli_error($mysqli));
+                    
+                    include '../php/conexion.php';
+                    include '../php/mostrarDatos.php';
 
-                    $sql="SELECT * FROM producto";
-                    $result=mysqli_query($conexion,$sql);
-
-                    while($mostrar=mysqli_fetch_array($result)){
+                    while($mostrar=mysqli_fetch_array($datos)){
                     
                         echo "<tr>";
                         echo "<td>".$mostrar['id']."</td>";
