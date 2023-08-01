@@ -1,0 +1,55 @@
+/* Estilos para la columna del medio */
+.columna-medio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FAE2A7;
+    height: 100vh;
+}
+
+/* Estilo para boton y ubicacion del mismo */
+.ubicacion-btn {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+}
+.boton {
+    background-color: #8B0000;
+    border-color: black;
+}
+
+/* Estilo para columnas */
+.columna-derecha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FAE2A7;
+    height: 100vh;
+}
+.columna-izquierda {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: beige;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Estilo para columnas vacias */
+.columna-vacia-agg {
+    background-image: url("../img/imagen-fondo2.jpg");
+    background-size: cover;
+}
+
+/* Estilo para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 165, 0, 0.5);
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
