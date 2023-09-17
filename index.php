@@ -96,12 +96,21 @@
   }
 
   /* Estilo para la lista de productos */
+  .contenedor-titulo {
+    height: 10vh;
+  }
+  .contenedor-tabla {
+    height: 60vh;
+  }
+  .contenedor-total {
+    height: 10vh;
+  }
   .titulo-lista {
     font-size: 28px;
     font-weight: bold;
   }
-  table {
-    width: 100%;
+  .tabla-productos {
+    width: 700px;
     border: colapse;
     background-color: rgba(223, 214, 197, 0.5);
   }
@@ -180,7 +189,6 @@
     z-index: 9999;
   }
   .modal-content {
-    background-color: white;
     position: absolute;
     width: 500px;
     height: 500px;
@@ -190,6 +198,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    background-color: #31D1E7;
   }
   .close {
     position: absolute;
@@ -197,17 +206,48 @@
     right: 10px;
     font-size: 20px;
     cursor: pointer;
+    border-radius: 30%;
   }
 
   /* Estilos para modal Cargar Manualmente */
   .modalTabla {
-    height: 80%;
+    width: 450px;
+    height: 500px;
   }
   .modalBoton {
     height: 20%;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .addFila {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 30%;
+  }
+  .tablaCargarManualmente {
+    margin-top: 30px;
+    width: 450px;
+  }
+  .tablaCargarManualmente th td {
+    height: 40px;
+  }
+  .tablaColCantidad {
+    width: 135px;
+  }
+  .tablaColNombre {
+    width: 315px;
+  }
+  .cantidadInput {
+    width: 90%;
+    height: 35px;
+  }
+  .productoSelect {
+    width: 90%;
+    height: 35px;
   }
 
 </style>
@@ -223,7 +263,7 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" onmouseover="cambiarColor(this)" onmouseout="restaurarColor(this)" href="vistas/agregarNuevoProducto.php">Agregar</a></li>
             <li><a class="dropdown-item" onmouseover="cambiarColor(this)" onmouseout="restaurarColor(this)" href="vistas/modificarBorrar.php">Borrar y Modificar</a></li>
-            <li><a class="dropdown-item" onmouseover="cambiarColor(this)" onmouseout="restaurarColor(this)" href="#">Solicitar fabricación</a></li>
+            <li><a class="dropdown-item" onmouseover="cambiarColor(this)" onmouseout="restaurarColor(this)" href="vistas/vistaQR.html">Prueba Caja</a></li>
           </ul>
         </div>
       </div>
@@ -249,20 +289,34 @@
       </div>
       <!-- Contenido de la columna derecha -->
       <div class="col-6 columna-derecha">
-        <p class="titulo-lista">LISTA DE PRODUCTOS</p>
-        <table id="miTabla">
-          <thead>
-            <tr>
-              <th>Cantidad</th>
-              <th>Nombre del Producto</th>
-              <th>Precio Unitario</th>
-              <th>Importe</th>
-            </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
+        <div class="row">
+          <div class="col-12 contenedor-titulo">
+            <p class="titulo-lista">LISTA DE PRODUCTOS</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 contenedor-tabla">
+            <table id="miTabla" class="tabla-productos">
+              <thead>
+                <tr>
+                  <th>Cantidad</th>
+                  <th>Nombre del Producto</th>
+                  <th>Precio Unitario</th>
+                  <th>Importe</th>
+                </tr>
+              </thead>
+              <tbody> 
+                <!-- Aqui se añaden los productos reconocidos o cargados manualmente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 contenedor-total">
+            <label for="">TOTAL</label>
+            <input type="number" name="total" id="total" readonly>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Contenido de la ultima fila -->
@@ -272,13 +326,13 @@
           Cargar Manualmente
           <i class="bi bi-hand-index"></i>
         </button>
-        <!-- Modal -->
+        <!-- Modal Cargar Manualmente -->
         <div class="overlay" id="modalCargarManualmente">
           <div class="modal-content">
             <div class="modalTabla">
               <button class="close" id="cerrarModal">&times;</button>
-              <button id="agregarCombobox">Agregar Combobox</button>
-              <table class="tablaCargarManualmente">
+              <button class="addFila" id="agregarCombobox">+</button>
+              <table id="tablaModal" class="tablaCargarManualmente">
                 <thead>
                   <tr>
                     <th class="tablaColCantidad">Cantidad</th>
@@ -286,26 +340,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <input type="number" class="cantidadInput" min="1">
-                    </td>
-                    <td>
-                      <select id="productoSelect1" class="productoSelect"></select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div id="contenedorCombobox"></div>
-                      <!-- Aquí puedes agregar filas si es necesario -->
-                    </td>
-                  </tr>
+                  <div id="contenedorCombobox">
+                    <!-- Aquí se adicionan las nuevas filas al darle al botón + -->
+                  </div>
                 </tbody>
-
               </table>
             </div>
             <div class="modalBoton">
-              <button class="btn btn-primary">Cargar</button>
+              <button id="cargar" class="btn btn-primary">Cargar</button>
             </div>
           </div>
         </div>
@@ -328,36 +370,35 @@
     </div>
   </div>
   <script>
-    // Carga de la imagen y Ocultamiento
-    document.getElementById('image-upload').addEventListener('change', function (e) {
-      var imagePreview = document.getElementById('image-preview');
-      imagePreview.style.display = 'block'; // Muestra la vista previa de la imagen
+    document.addEventListener("DOMContentLoaded", function(){
+      // Carga de la imagen y Ocultamiento
+      document.getElementById('image-upload').addEventListener('change', function (e) {
+        var imagePreview = document.getElementById('image-preview');
+        imagePreview.style.display = 'block'; // Muestra la vista previa de la imagen
 
-      var h1Element = document.querySelector('.frame-box p');
-      h1Element.style.display = 'none'; // Oculta el título
+        var h1Element = document.querySelector('.frame-box p');
+        h1Element.style.display = 'none'; // Oculta el título
 
-      var inputElement = document.getElementById('image-upload');
-      inputElement.style.display = 'none'; // Oculta el input
+        var inputElement = document.getElementById('image-upload');
+        inputElement.style.display = 'none'; // Oculta el input
 
-      var file = e.target.files[0];
-      var reader = new FileReader();
+        var file = e.target.files[0];
+        var reader = new FileReader();
 
-      reader.onload = function (event) {
-          imagePreview.src = event.target.result;
-      };
+        reader.onload = function (event) {
+            imagePreview.src = event.target.result;
+        };
 
-      reader.readAsDataURL(file);
-    });
+        reader.readAsDataURL(file);
+      });
 
-    // Efecto para las opciones de Producto
-    function cambiarColor(elemento) {
-      elemento.style.backgroundColor = "rgba(255, 165, 0, 0.5)"; // Cambiar a cualquier color deseado
-    }
-    function restaurarColor(elemento) {
-      elemento.style.backgroundColor = ""; // Restaurar el color original
-    }
+      function cambiarColor(elemento) {
+        elemento.style.backgroundColor = "rgba(255, 165, 0, 0.5)"; // Cambiar a cualquier color deseado
+      }
+      function restaurarColor(elemento) {
+        elemento.style.backgroundColor = ""; // Restaurar el color original
+      }
 
-    document.addEventListener("DOMContentLoaded", function() {
       const abrirModalButton = document.getElementById("abrirModalCargarManualmente");
       const modal = document.getElementById("modalCargarManualmente");
       const cerrarModalButton = document.getElementById("cerrarModal");
@@ -370,19 +411,9 @@
         
         // Limpiar todas las filas en la tabla, excepto la primera
         const filas = tabla.querySelectorAll("tr");
-        for (let i = 1; i < filas.length; i++) {
+        for (let i = 0; i < filas.length; i++) {
           tabla.removeChild(filas[i]);
         }
-
-        // Limpiar el input de cantidad en la primera fila
-        const cantidadInput1 = tabla.querySelector(".cantidadInput");
-        cantidadInput1.value = "";
-
-        // Limpiar el combobox en la primera fila
-        const productoSelect1 = tabla.querySelector(".productoSelect");
-        productoSelect1.selectedIndex = -1; // Limpiar la selección
-
-        contadorFilas = 1;
       }
 
       // Evento para cerrar el modal y restablecerlo al hacer clic en el botón "Cerrar Modal"
@@ -394,7 +425,7 @@
           restablecerModal();
         }
       });
-
+      
       abrirModalButton.addEventListener("click", function() {
         modal.style.display = "block";
       });
@@ -404,83 +435,121 @@
             modal.style.display = "none";
         }
       });
-    });
 
-    // Obtener referencias a los elementos Select por sus IDs
-    const productoSelect1 = document.getElementById("productoSelect1");
+      const agregarFilaButton = document.getElementById("agregarCombobox");
+      let contadorFilas = 0;
+      const limiteFilas = 5; 
 
-    // Realizar una solicitud AJAX al archivo PHP para cargar datos en el primer combobox
-    $.ajax({
-      url: "php/cargarNombreProductos.php",
-      type: "GET",
-      dataType: "json",
-      success: function(data) {
-        // Llenar el primer combobox con los nombres de productos
-        data.forEach(nombre => {
-          const option = new Option(nombre, nombre);
-          productoSelect1.appendChild(option);
-        });
+      // Función para agregar una nueva fila
+      function agregarFila() {
+        // Verificar si se ha alcanzado el límite de filas
+        if (contadorFilas < limiteFilas) {
+          // Crear un nuevo combobox
+          const nuevoCombobox = $("<select name='nombre' class='productoSelect'></select>");
 
-        // Inicializar Select2 en el primer combobox
-        $(productoSelect1).select2();
-      },
-      error: function(xhr, status, error) {
-        console.error(error);
+          // Agregar el nuevo combobox al contenedor
+          const nuevaFila = $("<tr></tr>");
+          nuevaFila.append("<td><input name='cantidad' type='number' class='cantidadInput' min='1'></td>");
+          nuevaFila.append("<td></td>"); // Espacio para el nuevo combobox
+          nuevaFila.find("td:last-child").append(nuevoCombobox);
+
+          $(".tablaCargarManualmente tbody").append(nuevaFila);
+
+          // Realizar una solicitud AJAX para cargar datos en el nuevo combobox
+          $.ajax({
+            url: "php/cargarNombreProductos.php",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+              // Llenar el nuevo combobox con los nombres de productos
+              data.forEach(nombre => {
+                const option = new Option(nombre, nombre);
+                nuevoCombobox.append(option);
+              });
+
+              // Inicializar Select2 en el nuevo combobox
+              nuevoCombobox.select2();
+            },
+            error: function (xhr, status, error) {
+              console.error(error);
+            }
+          });
+
+          // Incrementar el contador de filas
+          contadorFilas++;
+        } else {
+          alert("Se ha alcanzado el límite de filas.");
+        }
       }
-    });
 
-    const agregarFilaButton = document.getElementById("agregarCombobox");
+      // Escuchar el clic en el botón "Agregar Combobox"
+      agregarFilaButton.addEventListener("click", agregarFila);
 
-    // Contador de filas
-    let contadorFilas = 1;
+      const cargarButton = document.getElementById("cargar");
+      const tablaFueraModal = document.getElementById("miTabla");
+      const tablaModal = document.getElementById("tablaModal");
+      const totalInput = document.getElementById("total");
 
-    // Límite de filas
-    const limiteFilas = 5; 
+      let total = 0; // Variable global para almacenar el total acumulativo
 
-    // Función para agregar una nueva fila
-    function agregarFila() {
-      // Verificar si se ha alcanzado el límite de filas
-      if (contadorFilas < limiteFilas) {
-        // Crear un nuevo combobox
-        const nuevoCombobox = $("<select class='productoSelect'></select>");
+      cargarButton.addEventListener("click", function() {
+        // Recorre las filas de la tabla dentro del modal y agrega los datos a la tabla fuera del modal
+        const filasModal = tablaModal.querySelectorAll("tr");
 
-        // Agregar el nuevo combobox al contenedor
-        const nuevaFila = $("<tr></tr>");
-        nuevaFila.append("<td><input type='number' class='cantidadInput' min='1'></td>");
-        nuevaFila.append("<td></td>"); // Espacio para el nuevo combobox
-        nuevaFila.find("td:last-child").append(nuevoCombobox);
+        filasModal.forEach(function(filaModal) {
+          const cantidadInput = filaModal.querySelector('input[name^="cantidad"]');
+          const nombreInput = filaModal.querySelector('select[name^="nombre"]'); // Cambiado a 'select'
 
-        $(".tablaCargarManualmente tbody").append(nuevaFila);
+          if (cantidadInput && nombreInput) { // Verificar si los elementos existen
+            const cantidad = cantidadInput.value;
+            const nombre = nombreInput.value;
 
-        // Realizar una solicitud AJAX para cargar datos en el nuevo combobox
-        $.ajax({
-          url: "php/cargarNombreProductos.php",
-          type: "GET",
-          dataType: "json",
-          success: function (data) {
-            // Llenar el nuevo combobox con los nombres de productos
-            data.forEach(nombre => {
-              const option = new Option(nombre, nombre);
-              nuevoCombobox.append(option);
-            });
+            if (cantidad && nombre) {
+              // Realiza una solicitud AJAX para obtener el precio del producto
+              fetch(`/php/buscarPrecio.php?nombre=${nombre}`)
+                .then(response => response.json())
+                .then(data => {
+                  if (data.precio_unitario) {
+                    const precio_unitario = data.precio_unitario;
 
-            // Inicializar Select2 en el nuevo combobox
-            nuevoCombobox.select2();
-          },
-          error: function (xhr, status, error) {
-            console.error(error);
+                    // Calcula el importe (cantidad multiplicada por precio_unitario)
+                    const importe = cantidad * precio_unitario;
+                    total += importe; // Agrega el importe al total
+
+                    // Crea una nueva fila en la tabla con la cantidad, nombre, precio_unitario y importe
+                    const newRow = document.createElement("tr");
+                    newRow.innerHTML = `
+                      <td>${cantidad}</td>
+                      <td>${nombre}</td>
+                      <td>${precio_unitario}</td>
+                      <td>${importe}</td> <!-- Agrega el importe -->
+                    `;
+
+                    // Agrega la fila a la tabla fuera del modal
+                    tablaFueraModal.querySelector("tbody").appendChild(newRow);
+
+                    // Actualiza el campo de "total" con el nuevo total acumulativo
+                    totalInput.value = total;
+                    restablecerModal();
+
+                  } else {
+                    console.error("No se pudo obtener el precio del producto.");
+                  }
+                })
+                .catch(error => {
+                  console.error("Error en la solicitud al servidor:", error);
+                });
+            }
+          } else {
+            console.error("Los elementos de entrada no se encontraron en la fila modal.");
           }
         });
 
-        // Incrementar el contador de filas
-        contadorFilas++;
-      } else {
-        alert("Se ha alcanzado el límite de filas.");
-      }
-    }
+        // Cierra el modal después de cargar los datos
+        modal.style.display = "none"; // Oculta el modal
+      });
 
-    // Escuchar el clic en el botón "Agregar Combobox"
-    agregarFilaButton.addEventListener("click", agregarFila);
+    });
 
   </script>
 </body>
