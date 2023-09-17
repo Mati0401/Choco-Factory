@@ -28,71 +28,216 @@
   .columna-medio {
     margin: 10vh 0 10vh 0;
     height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     background-color: #31D1E7;
     border-radius: 5%;
     border: 1px solid black;
   }
+  .form-titulo {
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ubicacion-form {
+    height: 70vh;
+  }
+  form {
+    height: 70vh;
+  }
+  .form-info-imagen {
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .form-info-datos {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .ubicacion-btn {
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   /* Estilo para texto */
   .titulo {
     font-size: 40px;
     font-family: 'Rubik Wet Paint', cursive;
     padding-bottom: 20px ;
+    padding-top: 20px;
   }
   label {
-    font-size: 15px;
+    font-size: 20px;
     font-weight: bold;
+  }
+  .form-control {
+    font-size: 20px;
+    height: 40px;
+    width: 450px;
   }
   /* Estilo para los botones */
-  .ubicacion-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
   .boton {
     margin: 20px 0 20px 0;
+    margin-bottom: 70px;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 22px;
     border: 1px solid black;
   }
+  .boton-volver {
+    margin: 20px 0 20px 0;
+    font-weight: bold;
+    font-size: 22px;
+    border: 1px solid black;
+  }
+
+  /* Estilo para el contenedor de la bandeja de carga */
+  .file-upload-container {
+    width: 400px;
+    height: 400px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Estilo para el botón de carga */
+  .file-upload-button {
+    background-color: #007bff; 
+    color: #fff; 
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid black;
+  }
+
+  /* Estilo para ocultar el input real */
+  .file-upload-input {
+    display: none;
+  }
+  #selected-image {
+    max-width: 100%;
+    max-height: 200px; /* Altura máxima deseada para la imagen */
+  }
+
 </style>
 <body>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-4 columna-vacia">
+      <div class="col-2">
         <!-- Vacio -->
       </div>
-      <div class="col-4 columna-medio">
-        <form action="../php/agregar.php" method="post">
-          <h2 class="titulo">NUEVO PRODUCTO</h2>
-          <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input type="text" class="form-control" name="nombre" minlength="3" maxlength="25" required>
+      <div class="col-8 columna-medio">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-2">
+                <button class="btn btn-primary boton-volver" onclick="redirectToURL()">VOLVER</button>
+              </div>
+              <div class="col-8 form-titulo">            
+                <h2 class="titulo">NUEVO PRODUCTO</h2>
+              </div>
+              <div class="col-2"><!-- Vacio --></div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <textarea class="form-control" name="descripcion" minlength="10" maxlength="300" required></textarea>
+        </div>
+        <div class="row">
+          <div class="col-12 ubicacion-form">
+            <form action="../php/agregar.php" method="post" enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-6 form-info-imagen">
+                  <div class="form-group">
+                    <div class="file-upload-container">
+                      <label for="imagen" class="file-upload-button" id="select-button">Seleccionar Imagen</label>
+                      <input type="file" id="imagen" name="imagen" accept="image/png" class="file-upload-input" onchange="validarImagen()" required>
+                      <img id="selected-image" src="#" alt="">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 form-info-datos">
+                  <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" class="form-control" name="nombre" minlength="3" maxlength="25" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea class="form-control" name="descripcion" minlength="10" maxlength="300" required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="precio_unitario">Precio Unitario:</label>
+                    <input type="number" class="form-control" name="precio_unitario" step="0.01" min="0" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="stock">Stock:</label>
+                    <input type="number" class="form-control" name="stock" min="0" step="1" required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 ubicacion-btn form-group">
+                  <button type="submit" class="btn btn-primary boton" name="guardar-producto">GUARDAR</button>
+                </div>
+              </div>
+            </form>
           </div>
-          <div class="form-group">
-            <label for="precio_unitario">Precio Unitario:</label>
-            <input type="number" class="form-control" name="precio_unitario" step="0.01" min="0" required>
-          </div>
-          <div class="form-group">
-            <label for="stock">Stock:</label>
-            <input type="number" class="form-control" name="stock" min="0" step="1" required>
-          </div>
-          <div class="form-group ubicacion-btn">
-            <button type="submit" class="btn btn-primary boton" name="guardar-producto">GUARDAR</button>
-          </div>
-        </form>
+        </div>
       </div>
-      <div class="col-4 columna-vacia">
+      <div class="col-2 columna-vacia">
         <!-- Vacio -->
       </div>
     </div>
   </div>
+  <script>
+
+    function validarImagen() {
+      const imagenInput = document.getElementById('imagen');
+      const imagen = imagenInput.files[0]; // Obtén la imagen seleccionada
+      const selectedImage = document.getElementById('selected-image');
+      const selectButton = document.getElementById('select-button');
+
+      if (imagen) {
+        const imagenObj = new Image();
+        imagenObj.src = URL.createObjectURL(imagen);
+
+        imagenObj.onload = function () {
+          const ancho = imagenObj.width;
+          const alto = imagenObj.height;
+
+          // Define las dimensiones máximas y mínimas permitidas
+          const anchoMaximo = 750;
+          const altoMaximo = 750;
+          const anchoMinimo = 300;
+          const altoMinimo = 300;
+
+          if (ancho > anchoMaximo || alto > altoMaximo || ancho < anchoMinimo || alto < altoMinimo) {
+            alert(`La imagen seleccionada no cumple con los requisitos.`);
+            // Limpia el campo de entrada de archivo
+            imagenInput.value = '';
+            // Limpia la vista previa
+            selectedImage.src = '';
+            // Muestra el botón de selección
+            selectButton.style.display = 'block';
+          } else {
+            // La imagen cumple con los requisitos, muestra la vista previa y oculta el botón de selección
+            selectedImage.src = URL.createObjectURL(imagen);
+            selectButton.style.display = 'none';
+          }
+        };
+      }
+    }
+
+    // Funcionamiento del boton de volver
+    function redirectToURL() {
+      window.location.href = "../index.php"; 
+    }
+
+  </script>
 </body>
 </html>
